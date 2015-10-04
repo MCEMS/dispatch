@@ -1,3 +1,3 @@
 # Dispatch
 
-Dispatch Application for the MCEMS website
+Dispatch application for the MCEMS website.
