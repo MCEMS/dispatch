@@ -1,0 +1,12 @@
+language: node_js
+node_js:
+- '4.0'
+before_install:
+- chmod 755 ./build.sh
+script: "./build.sh"
+branches:
+  only:
+  - master
+env:
+  global:
+    secure: KxR7A2o5zUiEoIYD8J39KrqeI7X5nUYx3UdSDYjk2pyG751E5wm0IBDsnT0TLXx69DPTrEM0vJbJ3ut86pnJLMGeHjg86UH73BvHBI38GQgiq5jRiM8hxXavWerYrGpPH85deHoTdl/YA3c9TUzYbC3ytpP2fSmWw4RKCzle34uVFSfgZdxQaR7tY+R/j1sSldejR+4RkcZqeDI0042Hqc17aoOeQXjBzhBwj4ElGiV17YijWVkX5KTle1/qcf6EggNumUUW8P7AGn+Z9AlQ63ySjcHAISYBM+9wm/YZ9+ZypKStU43n/unqVU3buKTvXlLN00pSEiOnkdtQI9qogoRUmtFeNZnHPr+I0wZZ2UlGjEGzsmEL7vElKOjJKWVEs6VT0hbKUujinYmJDVA6p2RB0a8mcLrc0umQKN9CyCc3XI+Q4yYc2WI8HjGyJRN1Tj1KJT8qs+S0Tgo8mI7utTY3vIwoCIxvxpSvjOPNtDYowu20pCdDFB6DJHXhKYyxDkMAggwShXiQk+0JxQbubBYBczWDyCW4z1gi4Lmh6/tktQT/sxexhMrWIFghMYaKQgQMnm64FwIUnsY06rWCoe6Gm7UVK5h+uIzmfB3TOHlYi2U3dninmjqgQLVYmQg5AML30/vfvP7Nn89kET5BaeX0v7ruu1cOMvcriiNi+WI=
