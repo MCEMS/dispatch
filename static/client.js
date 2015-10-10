@@ -106,6 +106,12 @@
     });
   };
 
+  MCEMS.prototype.logout = function() {
+    if (storageAvailable()) {
+      window.sessionStorage.clear();
+    }
+  };
+
   MCEMS.prototype.sendAlert = function(data, done) {
     makeRequest('POST', '/api/v1/alert', data, function(status) {
       if (status !== 204) {
