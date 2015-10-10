@@ -106,14 +106,10 @@
     });
   };
 
-  MCEMS.prototype.getAccounts = function(done) {
-    makeRequest('GET', '/api/v1/account', null, function(status, response) {
-      if (status != 200) {
-        done(new Error('HTTP ' + status));
-      } else {
-        done(null, response);
-      }
-    });
+  MCEMS.prototype.logout = function() {
+    if (storageAvailable()) {
+      window.sessionStorage.clear();
+    }
   };
 
   MCEMS.prototype.sendAlert = function(data, done) {
