@@ -1,0 +1,13 @@
+{
+  "name": "dispatch",
+  "version": "0.0.0",
+  "homepage": "https://github.com/MCEMS/dispatch",
+  "authors": [
+    "vlora95 <vl248684@muhlenberg.edu>"
+  ],
+  "description": "MCEMS Dispatch App",
+  "license": "MIT",
+  "dependencies": {
+    "ember": "~2.1.0"
+  }
+}

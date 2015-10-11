@@ -4,6 +4,8 @@ GH_REPO="@github.com/MCEMS/dispatch.git"
 FULL_REPO="https://$GH_TOKEN$GH_REPO"
 
 npm install -g gulp
+npm install -g bower
+bower install
 gulp build
 
 cd dist
