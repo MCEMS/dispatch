@@ -32,7 +32,7 @@ var LoginPage = React.createClass({
 		var self = this;
 		this.props.client.login(this.state.username, this.state.password, function(err) {
 			if (err) {
-				alert("Try again");
+				alert("Invalid credentials");
 			} else {
 				self.props.application.setState({
 					component: <AlertForm client={self.props.client} application={self.props.application} />
@@ -58,11 +58,14 @@ var LoginPage = React.createClass({
 		var username = this.state.username;
 		var password = this.state.password;
 		return (
-			<form onSubmit={this.login}>
-				<input type="text" placeholder="Username" value={username} onChange={this.handleUsernameChange} />
-				<input type="password" placeholder="Password" value={password} onChange={this.handlePasswordChange} />
-				<input type="submit" value="Log In" />
-			</form>
+      <div>
+        <h1>MCEMS Dispatch</h1>
+  			<form onSubmit={this.login}>
+  				<p><input type="text" autoFocus placeholder="Username" value={username} onChange={this.handleUsernameChange} /></p>
+  				<p><input type="password" placeholder="Password" value={password} onChange={this.handlePasswordChange} /></p>
+  				<p><input className="btn btn-primary" type="submit" value="Log In" /></p>
+  			</form>
+      </div>
 		);
 	}
 });
@@ -70,6 +73,7 @@ var LoginPage = React.createClass({
 var AlertForm = React.createClass({
   getInitialState: function() {
     return {
+      disableSending: true,
       type: '',
       location: '',
       address: '2400 W Chew Street',
@@ -79,6 +83,18 @@ var AlertForm = React.createClass({
       mentalState: true,
       notes: ''
     };
+  },
+
+  validate: function() {
+    if (this.state.type.length > 0 && this.state.location.length > 0) {
+      this.setState({
+        disableSending: false
+      });
+    } else {
+      this.setState({
+        disableSending: true
+      });
+    }
   },
 
   handleAlert: function(e) {
@@ -96,9 +112,9 @@ var AlertForm = React.createClass({
     };
     this.props.client.sendAlert(sendAlert, function(err) {
       if (err) {
-        alert("Could not send alert.");
+        alert("There was a problem sending the alert. Please dispatch by radio.");
       } else {
-          alert("Alert Sent!");
+          alert("Alert Sent");
           self.setState(self.getInitialState());
       }
     });
@@ -108,12 +124,14 @@ var AlertForm = React.createClass({
     this.setState({
       type: event.target.value
     });
+    this.validate();
   },
 
   handleLocationChange: function(event) {
     this.setState({
       location: event.target.value
     });
+    this.validate();
   },
   handleAddressChange: function(event) {
     this.setState({
@@ -160,23 +178,78 @@ var AlertForm = React.createClass({
 	render: function() {
 		return (
       <div>
+        <div className="tabnav">
+          <button className="btn btn-danger right" onClick = {this.logout}>Log Out</button>
+          <h1>Send Alert</h1>
+        </div>
   			<form onSubmit={this.handleAlert}>
-  				<label>Type:</label><input type="text" value={this.state.type} onChange={this.handleTypeChange} />
-  				<label>Location:</label><input type="text" value={this.state.location} onChange={this.handleLocationChange} />
-          <label>Address:</label><input type="text" value={this.state.address} onChange={this.handleAddressChange} />
-  				<label>Age:</label><input type="text" value={this.state.age} onChange={this.handleAgeChange} />
-  				<select name="Sex:" onChange={this.handleSexChange}>
-  				  <option value="" selected={this.state.sex=='Unknown'}>Unknown</option>
-  				  <option value='Male' selected={this.state.sex=='Male'}>Male</option>
-  				  <option value='Female' selected={this.state.sex=='Female'}>Female</option>
-  				  <option value='Other' selected={this.state.sex=='Other'}>Other</option>
-  				</select>
-  				<label>Alert: </label><input type="checkbox" checked={this.state.mentalState} onChange={this.handleMentalStateChange} />
-  				<label>Breathing Normally</label><input type="checkbox" checked={this.state.breathing} onChange={this.handleBreathingChange} />
-  				<label>Notes:</label><input type="text" value={this.state.notes} onChange={this.handleNotesChange} />
-  				<input type="submit" value="Submit" />
+          <div className="columns">
+            <div className="one-half column">
+      				<div>
+                <label>
+                  <p className="text-closed">Chief Complaint (required)</p>
+                  <p><input className="input-block" type="text" autoFocus value={this.state.type} onBlur={this.validate} onChange={this.handleTypeChange} /></p>
+                </label>
+              </div>
+      				<div>
+                <label>
+                  <p className="text-closed">Location (required)</p>
+                  <p><input className="input-block" type="text" value={this.state.location} onBlur={this.validate} onChange={this.handleLocationChange} /></p>
+                </label>
+              </div>
+              <div>
+                <label>
+                  <p>Address</p>
+                  <p><input className="input-block" type="text" value={this.state.address} onChange={this.handleAddressChange} /></p>
+                </label>
+              </div>
+            </div>
+            <div className="one-fourth column">
+      				<div>
+                <label>
+                  <p>Age</p>
+                  <p><input className="input-block" type="text" value={this.state.age} onChange={this.handleAgeChange} /></p>
+                </label>
+              </div>
+              <div className="form-checkbox">
+                <label>
+                  <input type="checkbox" checked={this.state.mentalState} onChange={this.handleMentalStateChange} />
+                  Alert
+                </label>
+                <p className="note">Patient is conscious and responding normally to questions</p>
+              </div>
+              <div className="form-checkbox">
+                <label>
+                  <input type="checkbox" checked={this.state.breathing} onChange={this.handleBreathingChange} />
+                  Breathing Normally
+                </label>
+                <p className="note">Patient is not short of breath</p>
+              </div>
+            </div>
+            <div className="one-fourth column">
+      				<div>
+                <label>
+                  <p>Sex</p>
+                  <p><select className="input-block select" onChange={this.handleSexChange}>
+      				      <option value="" selected={this.state.sex=='Unknown'}>Unknown</option>
+      				      <option value='Male' selected={this.state.sex=='Male'}>Male</option>
+      				      <option value='Female' selected={this.state.sex=='Female'}>Female</option>
+      				      <option value='Other' selected={this.state.sex=='Other'}>Other</option>
+      				    </select></p>
+                </label>
+              </div>
+      				<div>
+                <label>
+                  <p>Notes</p>
+                  <p><input className="input-block" type="text" value={this.state.notes} onChange={this.handleNotesChange} /></p>
+                </label>
+              </div>
+            </div>
+          </div>
+          <div className="columns">
+            <p><input className="btn btn-primary" disabled={this.state.disableSending} type="submit" value="Send Alert" /></p>
+          </div>
   			</form>
-        <button onClick = {this.logout}>Log Out</button>
       </div>
 		);
 	}
