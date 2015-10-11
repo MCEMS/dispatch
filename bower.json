@@ -8,6 +8,7 @@
   "description": "MCEMS Dispatch App",
   "license": "MIT",
   "dependencies": {
-    "ember": "~2.1.0"
+    "primer-css": "~2.3.5",
+    "react": "~0.14.0"
   }
 }

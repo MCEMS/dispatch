@@ -2,31 +2,33 @@
 <head>
 <title>Dispatch Console</title>
 <script src="/client.js"></script>
-<script src="/jquery.min.js"></script>
-<script src="/ember.min.js"></script>
+<script src="/react.min.js"></script>
+<link rel="stylesheet" href="/primer.css">
 </head>
 <body>
+  <div id="application"></div>
 <script>
-var client = new MCEMS();
+// var client = new MCEMS();
 
-client.login('username', 'password', function(err) {
-  if (err) {
-    console.log(err);
-  } else {
-    client.sendAlert({
-      type: 'TESTING cardiac arrest',
-      location: 'Walz 123',
-      address: '2400 Chew St',
-      info: 'additional info seems sorely lacking'
-    }, function(err) {
-      if (err) {
-        console.error(err);
-      } else {
-        console.log('alert sent!');
-      }
-    });
-  }
-});
+// client.login('username', 'password', function(err) {
+//   if (err) {
+//     console.log(err);
+//   } else {
+//     client.sendAlert({
+//       type: 'TESTING cardiac arrest',
+//       location: 'Walz 123',
+//       address: '2400 Chew St',
+//       info: 'additional info seems sorely lacking'
+//     }, function(err) {
+//       if (err) {
+//         console.error(err);
+//       } else {
+//         console.log('alert sent!');
+//       }
+//     });
+//   }
+// });
 </script>
+<script src="/app.js"></script>
 </body>
 </html>
