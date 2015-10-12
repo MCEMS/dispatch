@@ -1,6 +1,7 @@
 var LoginPage = React.createClass({
 	getInitialState: function() {
 		return {
+			enableLoginButton: true,
 			username: '',
 			password: ''
 		};
@@ -9,7 +10,15 @@ var LoginPage = React.createClass({
 	login: function(e) {
 		e.preventDefault();
 		var self = this;
+		this.setState({
+			enableLoginButton: false
+		});
+
 		this.props.client.login(this.state.username, this.state.password, function(err) {
+			self.setState({
+				enableLoginButton: true
+			});
+
 			if (err) {
 				alert("Invalid credentials");
 			} else {
@@ -32,18 +41,19 @@ var LoginPage = React.createClass({
 		});
 	},
 
-
 	render: function() {
 		var username = this.state.username;
 		var password = this.state.password;
 		return (
-      <div>
-        <h1>MCEMS Dispatch</h1>
-  			<form onSubmit={this.login}>
-  				<p><input type="text" autoFocus placeholder="Username" value={username} onChange={this.handleUsernameChange} /></p>
-  				<p><input type="password" placeholder="Password" value={password} onChange={this.handlePasswordChange} /></p>
-  				<p><input className="btn btn-primary" type="submit" value="Log In" /></p>
-  			</form>
+			<div className="columns">
+				<div className="one-third column centered">
+					<h1 className="text-center">MCEMS Dispatch</h1>
+					<form onSubmit={this.login}>
+						<p><input className="input-block input-large" type="text" autoFocus placeholder="Username" value={username} onChange={this.handleUsernameChange} /></p>
+						<p><input className="input-block input-large" type="password" placeholder="Password" value={password} onChange={this.handlePasswordChange} /></p>
+						<p><input disabled={!this.state.enableLoginButton} className="btn btn-primary btn-block" type="submit" value="Log In" /></p>
+					</form>
+				</div>
       </div>
 		);
 	}
