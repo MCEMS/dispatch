@@ -11,25 +11,35 @@ gulp.task('static', function() {
 });
 
 gulp.task('compileJsx', function() {
-	return gulp.src('src/jsx/*.jsx')
-		.pipe(babel())
+	return gulp.src([
+		'src/jsx/components/*.jsx',
+		'src/jsx/pages/*.jsx',
+		'src/jsx/*.jsx'
+	]).pipe(babel())
 		.pipe(concat('jsx.js'))
 		.pipe(gulp.dest('build'));
 });
 
-gulp.task('minifyJs', [ 'compileJsx', 'bower' ], function() {
+gulp.task('minifyJs', [ 'concatJs' ], function() {
+	return gulp.src('dist/app.js')
+		.pipe(uglify())
+		.pipe(gulp.dest('dist'));
+});
+
+gulp.task('concatJs', [ 'compileJsx', 'bower' ], function() {
 	return gulp.src([
 		'src/js/*',
-		'build/react.min.js',
+		'build/react.js',
+		'build/react-dom.js',
 		'build/jsx.js'
 	]).pipe(concat('app.js'))
-		.pipe(uglify())
 		.pipe(gulp.dest('dist'));
 });
 
 gulp.task('bower', function() {
 	return gulp.src([
-		'./bower_components/react/react.min.js',
+		'./bower_components/react/react.js',
+		'./bower_components/react/react-dom.js',
 		'./bower_components/primer-css/css/primer.css'
 	]).pipe(gulp.dest('build'));
 });
@@ -51,3 +61,5 @@ gulp.task('minifyCss', [ 'bower' ], function() {
 });
 
 gulp.task('build', [ 'static', 'minifyJs', 'minifyHtml', 'minifyCss' ]);
+
+gulp.task('buildDev', [ 'static', 'concatJs', 'minifyHtml', 'minifyCss' ]);
