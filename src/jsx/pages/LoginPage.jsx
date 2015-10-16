@@ -1,9 +1,10 @@
 var LoginPage = React.createClass({
 	getInitialState: function() {
 		return {
-			enableLoginButton: true,
+			enableInput: true,
 			username: '',
-			password: ''
+			password: '',
+			flash: null
 		};
 	},
 
@@ -11,19 +12,21 @@ var LoginPage = React.createClass({
 		e.preventDefault();
 		var self = this;
 		this.setState({
-			enableLoginButton: false
+			enableInput: false,
+			flash: null
 		});
 
 		this.props.client.login(this.state.username, this.state.password, function(err) {
-			self.setState({
-				enableLoginButton: true
-			});
+			self.setState({ enableInput: true });
 
 			if (err) {
-				alert("Invalid credentials");
+				self.setState({
+					password: '',
+					flash: <ErrorMessage message='Invalid credentials' />
+				});
 			} else {
 				self.props.application.setState({
-					component: <AlertForm client={self.props.client} application={self.props.application} />
+					component: <AlertPage client={self.props.client} application={self.props.application} />
 				});
 			}
 		});
@@ -48,18 +51,14 @@ var LoginPage = React.createClass({
 			<div className="columns">
 				<div className="one-third column centered">
 					<h1 className="text-center">MCEMS Dispatch</h1>
+					{this.state.flash}
 					<form onSubmit={this.login}>
-						<p><input className="input-block input-large" type="text" autoFocus placeholder="Username" value={username} onChange={this.handleUsernameChange} /></p>
-						<p><input className="input-block input-large" type="password" placeholder="Password" value={password} onChange={this.handlePasswordChange} /></p>
-						<p><input disabled={!this.state.enableLoginButton} className="btn btn-primary btn-block" type="submit" value="Log In" /></p>
+						<p><input disabled={!this.state.enableInput} className="input-block input-large" type="text" autoFocus placeholder="Username" value={username} onChange={this.handleUsernameChange} /></p>
+						<p><input disabled={!this.state.enableInput} className="input-block input-large" type="password" placeholder="Password" value={password} onChange={this.handlePasswordChange} /></p>
+						<p><input disabled={!this.state.enableInput} className="btn btn-primary btn-block" type="submit" value="Log In" /></p>
 					</form>
 				</div>
       </div>
 		);
 	}
 });
-
-React.render(
-	<Application />,
-	document.getElementById('application')
-);

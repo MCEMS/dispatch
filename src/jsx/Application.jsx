@@ -18,3 +18,8 @@ var Application = React.createClass({
 		return this.state.component;
 	}
 });
+
+ReactDOM.render(
+	<Application />,
+	document.getElementById('application')
+);
