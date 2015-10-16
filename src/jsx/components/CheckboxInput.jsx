@@ -1,35 +1,31 @@
 var CheckboxInput = React.createClass({
   propTypes: {
-    defaultValue: React.PropTypes.bool,
     label: React.PropTypes.string,
-    note: React.PropTypes.string
+    note: React.PropTypes.string,
+    onChange: React.PropTypes.func,
+    id: React.PropTypes.string,
+    value: React.PropTypes.bool
   },
 
   getDefaultProps: function() {
     return {
-      defaultValue: false,
       label: '',
-      note: ''
-    };
-  },
-
-  getInitialState: function() {
-    return {
-      value: this.props.defaultValue || false
+      note: '',
+      onChange: function(id, value) {},
+      id: '',
+      value: false
     };
   },
 
   handleChange: function() {
-    this.setState({
-      value: !this.state.value
-    });
+    this.props.onChange(this.props.id, !this.props.value);
   },
 
   render: function() {
     return (
       <div className="form-checkbox">
         <label>
-          <input type="checkbox" checked={this.state.value} onChange={this.handleChange} />
+          <input type="checkbox" checked={this.props.value} onChange={this.handleChange} />
           {this.props.label}
         </label>
         <p className="note">{this.props.note}</p>

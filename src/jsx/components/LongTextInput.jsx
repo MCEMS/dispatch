@@ -1,28 +1,24 @@
 var LongTextInput = React.createClass({
   propTypes: {
     label: React.PropTypes.string,
-    defaultValue: React.PropTypes.string,
-    autoFocus: React.PropTypes.bool
+    autoFocus: React.PropTypes.bool,
+    onChange: React.PropTypes.func,
+    id: React.PropTypes.string,
+    value: React.PropTypes.string
   },
 
   getDefaultProps: function() {
     return {
       label: '',
-      defaultValue: '',
-      autoFocus: undefined
+      autoFocus: undefined,
+      onChange: function(id, value) {},
+      id: '',
+      value: ''
     };
   },
 
-  getInitialState: function() {
-    return {
-      value: this.props.defaultValue
-    }
-  },
-
   handleChange: function(event) {
-    this.setState({
-      value: event.target.value
-    });
+    this.props.onChange(this.props.id, event.target.value);
   },
 
   render: function() {
@@ -30,7 +26,7 @@ var LongTextInput = React.createClass({
       <div>
         <label>
           <p>{this.props.label}</p>
-          <p><textarea rows="5" onChange={this.handleChange} className="input-block" value={this.state.value} autoFocus={this.props.autoFocus} /></p>
+          <p><textarea rows="5" onChange={this.handleChange} className="input-block" value={this.props.value} autoFocus={this.props.autoFocus} /></p>
         </label>
       </div>
     );

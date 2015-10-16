@@ -2,27 +2,23 @@ var SelectInput = React.createClass({
   propTypes: {
     label: React.PropTypes.string,
     options: React.PropTypes.arrayOf(React.PropTypes.string),
-    defaultValue: React.PropTypes.string
+    onChange: React.PropTypes.func,
+    id: React.PropTypes.string,
+    value: React.PropTypes.string
   },
 
   getDefaultProps: function() {
     return {
       label: '',
       options: [],
-      defaultValue: ''
-    };
-  },
-
-  getInitialState: function() {
-    return {
-      value: this.props.options[0]
+      onChange: function(id, value) {},
+      id: '',
+      value: ''
     };
   },
 
   handleChange: function(event) {
-    this.setState({
-      value: event.target.value
-    });
+    this.props.onChange(this.props.id, event.target.value);
   },
 
   render: function() {
@@ -38,7 +34,7 @@ var SelectInput = React.createClass({
       <div>
         <label>
           <p>{this.props.label}</p>
-          <select onChange={this.handleChange}>
+          <select onChange={this.handleChange} value={this.props.value}>
             {options}
           </select>
         </label>

@@ -8,25 +8,35 @@ var AlertPage = React.createClass({
 
   getInitialState: function() {
     return {
-      enableSending: true
+      enableSending: false,
+      chiefComplaint: '',
+      location: '',
+      address: '2400 W CHEW ST',
+      age: '',
+      sex: 'Unknown Sex',
+      notes: '',
+      isConscious: true,
+      isAlert: true,
+      isBreathing: true,
+      ambulanceRequested: false
     };
   },
 
   getInfo: function() {
-    var age = Number(this.refs.age.state.value);
-    var sex = this.refs.sex.state.value;
-    var conscious = this.refs.conscious.state.value;
-    var alert = this.refs.alert.state.value;
-    var breathing = this.refs.breathing.state.value;
-    var ambulanceRequested = this.refs.ambulanceRequested.state.value;
-    var notes = this.refs.notes.state.value;
+    var age = Number(this.state.age);
+    var sex = this.state.sex;
+    var isConscious = this.state.isConscious;
+    var isAlert = this.state.isAlert;
+    var isBreathing = this.state.isBreathing;
+    var ambulanceRequested = this.state.ambulanceRequested;
+    var notes = this.state.notes;
 
     var info = '';
     info += (age > 0 ? (age + ' Y/O ') : 'Unknown age ');
     info += sex + '. ';
-    info += (conscious ? 'Conscious, ' : 'Unconscious, ');
-    info += (alert ? 'alert, ' : 'not alert, ');
-    info += (breathing ? 'breathing normally. ' : 'abnormal breathing. ');
+    info += (isConscious ? 'Conscious, ' : 'Unconscious, ');
+    info += (isAlert ? 'alert, ' : 'not alert, ');
+    info += (isBreathing ? 'breathing normally. ' : 'abnormal breathing. ');
     info += (ambulanceRequested ? 'Ambulance requested. ' : '');
     info += notes;
 
@@ -35,39 +45,45 @@ var AlertPage = React.createClass({
 
   getAlert: function() {
     return {
-      type: this.refs.complaint.state.value,
-      location: this.refs.location.state.value,
-      address: this.refs.address.state.value,
+      type: this.state.chiefComplaint,
+      location: this.state.location,
+      address: this.state.address,
       info: this.getInfo()
     };
   },
 
-  // handleAlert: function(e) {
-  //   e.preventDefault();
-  //   var self = this;
+  handleInputElementChange: function(id, value) {
+    var chiefComplaint = (id == 'chiefComplaint' ? value : this.state.chiefComplaint);
+    var location = (id == 'location' ? value : this.state.location);
+
+    var state = {};
+    state[id] = value;
+    state.enableSending = (chiefComplaint != '' && location != '');
+    this.setState(state);
+  },
+
+  handleAlert: function(e) {
+    e.preventDefault();
+    var self = this;
     
-  //   // Prevent sending a duplicate alert
-  //   self.setState({
-  //     enableSending: false
-  //   });
+    // Prevent sending a duplicate alert
+    self.setState({
+      enableSending: false
+    });
 
-  //   this.props.client.sendAlert(sendAlert, function(err) {
-  //     // Re-enable sending alerts, this one has been processed
-  //     self.setState({
-  //       enableSending: true
-  //     });
+    this.props.client.sendAlert(this.getAlert(), function(err) {
+      // Re-enable sending alerts, this one has been processed
+      self.setState({
+        enableSending: true
+      });
 
-  //     if (err) {
-  //       alert('There was a problem sending the alert. Please dispatch by radio.');
-  //     } else {
-  //         alert('Alert Sent');
-  //         self.setState(self.getInitialState());
-  //     }
-  //   });
-  // },
-
-  handleAlert: function() {
-    console.log(this.getAlert());
+      if (err) {
+        alert('There was a problem sending the alert. Please dispatch by radio.');
+      } else {
+          alert('Alert Sent');
+          self.setState(self.getInitialState());
+      }
+    });
   },
 
   logout: function() {
@@ -97,27 +113,34 @@ var AlertPage = React.createClass({
               <TextInput
                 label='Chief Complaint'
                 placeholder='Why is the patient calling for help?'
-                ref='complaint'
-                required={true}
+                id='chiefComplaint'
+                onChange={this.handleInputElementChange}
+                value={this.state.chiefComplaint}
+                error={this.state.chiefComplaint==''}
                 autoFocus={true} />
 
       				<TextInput
                 label='Location'
                 placeholder='Physical campus location, e.g. Walz 123'
-                ref='location'
-                required={true} />
+                id='location'
+                value={this.state.location}
+                error={this.state.location==''}
+                onChange={this.handleInputElementChange} />
 
               <TextInput
                 label='Address'
                 defaultValue='2400 W CHEW ST'
-                ref='address'
-                required={true} />
+                id='address'
+                value={this.state.address}
+                onChange={this.handleInputElementChange} />
             </div>
             <div className='one-third column'>
               <TextInput
                 label='Age'
                 placeholder='Unknown'
-                ref='age' />
+                id='age'
+                value={this.state.age}
+                onChange={this.handleInputElementChange} />
 
               <SelectInput
                 label='Sex'
@@ -127,36 +150,44 @@ var AlertPage = React.createClass({
                   'Female',
                   'Other'
                 ]}
-                ref='sex' />
+                id='sex'
+                value={this.state.sex}
+                onChange={this.handleInputElementChange} />
 
               <LongTextInput
                 label='Additional Information'
-                ref='notes' />
+                id='notes'
+                value={this.state.notes}
+                onChange={this.handleInputElementChange} />
             </div>
             <div className='one-third column'>
               <CheckboxInput
                 label='Conscious'
                 note='Patient is awake'
-                ref='conscious'
-                defaultValue={true} />
+                id='isConscious'
+                value={this.state.isConscious}
+                onChange={this.handleInputElementChange} />
 
               <CheckboxInput
                 label='Alert'
                 note='Patient is behaving and responding normally to questions'
-                ref='alert'
-                defaultValue={true} />
+                id='isAlert'
+                value={this.state.isAlert}
+                onChange={this.handleInputElementChange} />
 
               <CheckboxInput
                 label='Breathing Normally'
                 note='Patient is breathing regularly, is not short of breath'
-                ref='breathing'
-                defaultValue={true} />
+                id='isBreathing'
+                value={this.state.isBreathing}
+                onChange={this.handleInputElementChange} />
 
               <CheckboxInput
                 label='Ambulance Requested'
                 note='An ambulance has also been requested for this patient'
-                ref='ambulanceRequested'
-                defaultValue={false} />
+                id='ambulanceRequested'
+                value={this.state.ambulanceRequested}
+                onChange={this.handleInputElementChange} />
             </div>
           </div>
   			</form>
