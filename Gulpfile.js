@@ -2,8 +2,8 @@ var gulp = require('gulp');
 var babel = require('gulp-babel');
 var concat = require('gulp-concat');
 var uglify = require('gulp-uglify');
-var minifyHtml = require('gulp-minify-html');
-var minifyCss = require('gulp-minify-css');
+var minifyHtml = require('gulp-htmlmin');
+var minifyCss = require('gulp-cssnano');
 
 gulp.task('static', function() {
   return gulp.src(['./static/**/*', './static/**/.*'])
