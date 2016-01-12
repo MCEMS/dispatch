@@ -103,6 +103,7 @@ var AlertPage = React.createClass({
             </div>
             <div className='tabnav-extra'>
               <button className='btn btn-danger' onClick={this.logout}>Log Out</button>
+              <button className='glyphicon glyphicon-question-sign'>Help</button>
             </div>
           </div>
           <h1>Dispatch MCEMS</h1>
