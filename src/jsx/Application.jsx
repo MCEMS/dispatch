@@ -9,7 +9,7 @@ var Application = React.createClass({
 	componentDidMount: function() {
 		if (this.isMounted()) {
 			this.setState({
-				component: <AlertPage client={this.state.client} application={this} />
+				component: <LoginPage client={this.state.client} application={this} />
 			});
 		}
 	},
