@@ -24,7 +24,7 @@ ReactDOM.render(
 		<Application />
 		<div className="container">
 			<div className="text-center">
-				<a href="https://github.com/MCEMS/mcems.github.io/raw/master/docs/MCEMS%20Dispatch%20-%20User%20Guide%20-%20Single%20Page.pdf">Help</a>
+				<a href="https://mcems.github.io/docs/MCEMS%20Dispatch%20-%20User%20Guide%20-%20Single%20Page.pdf">Help</a>
 			</div>
 		</div>
 	</div>,
