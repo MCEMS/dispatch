@@ -12,9 +12,15 @@ gulp.task('static', function() {
 
 gulp.task('compileJsx', function() {
 	return gulp.src([
-		'src/jsx/components/*.jsx',
-		'src/jsx/pages/*.jsx',
-		'src/jsx/*.jsx'
+		'src/jsx/CheckboxInput.jsx',
+		'src/jsx/LongTextInput.jsx',
+		'src/jsx/TextInput.jsx',
+		'src/jsx/SelectInput.jsx',
+		'src/jsx/ErrorMessage.jsx',
+		'src/jsx/FlashMessage.jsx',
+		'src/jsx/LoginPage.jsx',
+		'src/jsx/AlertPage.jsx',
+		'src/jsx/Application.jsx'
 	]).pipe(babel())
 		.pipe(concat('jsx.js'))
 		.pipe(gulp.dest('build'));
