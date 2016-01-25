@@ -122,5 +122,15 @@
     });
   };
 
+  MCEMS.prototype.getAlerts = function(data, done) {
+    makeRequest('GET', '/api/v1/active911/alert', data, function(status) {
+      if (status !== 200) {
+        done(new Error('Could not get alerts: HTTP' + status), null);
+      } else {
+        done(null, data)
+      }
+    });
+  };
+
   window.MCEMS = MCEMS;
 })();
