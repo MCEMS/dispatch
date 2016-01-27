@@ -107,6 +107,7 @@ var AlertPage = React.createClass({
           </div>
           <h1>Dispatch MCEMS</h1>
         </div>
+        <AlertTable client={this.props.client} />
   			<form onSubmit={this.handleAlert}>
           <div className='columns'>
             <div className='one-third column'>

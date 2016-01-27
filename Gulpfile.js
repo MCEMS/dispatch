@@ -19,6 +19,9 @@ gulp.task('compileJsx', function() {
 		'src/jsx/ErrorMessage.jsx',
 		'src/jsx/FlashMessage.jsx',
 		'src/jsx/LoginPage.jsx',
+		'src/jsx/UnitResponse.jsx',
+		'src/jsx/AlertRow.jsx',
+		'src/jsx/AlertTable.jsx',
 		'src/jsx/AlertPage.jsx',
 		'src/jsx/Application.jsx'
 	]).pipe(babel())
