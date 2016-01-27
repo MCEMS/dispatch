@@ -122,12 +122,12 @@
     });
   };
 
-  MCEMS.prototype.getAlerts = function(data, done) {
-    makeRequest('GET', '/api/v1/active911/alert', data, function(status) {
+  MCEMS.prototype.getAlerts = function(done) {
+    makeRequest('GET', '/api/v1/active911/alert', null, function(status, alerts) {
       if (status !== 200) {
         done(new Error('Could not get alerts: HTTP' + status), null);
       } else {
-        done(null, data)
+        done(null, alerts)
       }
     });
   };

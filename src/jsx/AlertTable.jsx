@@ -23,12 +23,28 @@ var AlertTable = React.createClass({
   },
 
   componentDidMount: function() {
+    this.refreshState();
     setInterval(this.refreshState, 30*1000);
   },
 
+  compareAlerts: function(a, b) {
+    var dateA = new Date(a.timestamp);
+    var dateB = new Date(b.timestamp);
+
+    if (dateA > dateB) {
+      return -1;
+    }
+    else if (dateA < dateB) {
+      return 1;
+    } else {
+      return 0;
+    }
+  },
+
   render: function() {
+    var sortedAlerts = this.state.alerts.sort(this.compareAlerts);
     return (
-      <table>
+      <table className='table table-bordered'>
         <tbody>
           <tr>
             <th>Time Sent</th>
@@ -37,7 +53,7 @@ var AlertTable = React.createClass({
             <th>Units</th>
             <th>Incident</th>
           </tr>
-          {this.state.alerts.map(function(alert) {
+          {sortedAlerts.map(function(alert) {
             return <AlertRow key={alert.id} {...alert} />;
           })}
         </tbody>

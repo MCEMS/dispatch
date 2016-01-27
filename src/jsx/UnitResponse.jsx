@@ -1,13 +1,13 @@
 var UnitResponse = React.createClass({
   propTypes: {
     name: React.PropTypes.string,
-    status: React.PropTypes.string,
+    response: React.PropTypes.string,
   },
 
   getDefaultProps: function() {
     return {
       name: "",
-      status: ""
+      response: ""
     };
   },
 
@@ -17,7 +17,7 @@ var UnitResponse = React.createClass({
 
   render: function() {
     return (
-      <div>{this.props.name}: {this.props.status}</div>
+      <div>{this.props.name}: {this.props.response}</div>
     );
   }
 

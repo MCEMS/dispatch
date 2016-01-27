@@ -4,7 +4,7 @@ var AlertRow = React.createClass({
     description: React.PropTypes.string,
     location: React.PropTypes.string,
     address: React.PropTypes.string,
-    id: React.PropTypes.number,
+    id: React.PropTypes.string,
     responses: React.PropTypes.array
   },
 
@@ -14,7 +14,7 @@ var AlertRow = React.createClass({
       description: "",
       location: "",
       address: "",
-      id: null,
+      id: "",
       responses: []
     };
   },
@@ -24,17 +24,20 @@ var AlertRow = React.createClass({
   },
 
   render: function() {
+    var responsesToDisplay = this.props.responses.filter(function(response) {
+      return response.response !== 'watch';
+    });
     return (
       <tr>
-        <td>{alert.timestamp}</td>
-        <td>{alert.description}</td>
-        <td>{alert.location} <br /> {alert.address}</td>
+        <td>{this.props.timestamp}</td>
+        <td>{this.props.description}</td>
+        <td>{this.props.location} <br /> {this.props.address}</td>
         <td>
-          {this.state.responses.map(function(response) {
-            return <UnitResponse key={response.id} name={response.name} status={response.status} />;
-          })}
+         {responsesToDisplay.map(function(response, index) {
+           return <UnitResponse key={index} {...response} />;
+         })}
         </td>
-        <td>{alert.id}</td>
+        <td>{this.props.id}</td>
       </tr>
     );
   }
