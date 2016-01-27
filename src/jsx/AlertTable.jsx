@@ -6,32 +6,41 @@ var AlertTable = React.createClass({
   },
 
   getInitialState: function() {
+    return {
+      alerts: []
+    };
+  },
+
+  refreshState: function() {
+    var component = this;
     this.props.client.getAlerts(function(err, alerts) {
       if (err) {
-        return { alerts: [] };
+        component.setState({ alerts: [] });
       } else {
-        return { alerts: alerts };
+        component.setState({ alerts: alerts });
       }
     });
   },
 
   componentDidMount: function() {
-    setInterval(this.setState(this.getInitialState()), 30)
+    setInterval(this.refreshState, 30*1000);
   },
 
   render: function() {
     return (
       <table>
-        <tr>
-          <th>Time Sent</th>
-          <th>Call</th>
-          <th>Location</th>
-          <th>Units</th>
-          <th>Incident</th>
-        </tr>
-        {this.state.alerts.map(function(alert) {
-          return <AlertRow key={alert.id} {...alert} />;
-        })}
+        <tbody>
+          <tr>
+            <th>Time Sent</th>
+            <th>Call</th>
+            <th>Location</th>
+            <th>Units</th>
+            <th>Incident</th>
+          </tr>
+          {this.state.alerts.map(function(alert) {
+            return <AlertRow key={alert.id} {...alert} />;
+          })}
+        </tbody>
       </table>
     );
   }
