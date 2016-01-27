@@ -1,0 +1,32 @@
+table.alertTable {
+  width: 100%;
+  text-align: left;
+  th, td {
+    vertical-align: text-top;
+    padding: 0.25em;
+  }
+  td {
+    border-style: solid none;
+    border-color: #ccc;
+    border-width: 1px;
+  }
+
+  .response.responding {
+    font-weight: bold;
+  }
+  .response.pickup {
+    font-weight: bold;
+    color: #c60;
+  }
+  .response.driver {
+    font-weight: bold;
+    color: #009;
+  }
+  .response.onscene {
+    color: #090;
+    font-weight: bold;
+  }
+  .response.clear {
+    color: #ccc;
+  }
+}

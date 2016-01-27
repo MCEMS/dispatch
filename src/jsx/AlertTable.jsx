@@ -24,7 +24,7 @@ var AlertTable = React.createClass({
 
   componentDidMount: function() {
     this.refreshState();
-    setInterval(this.refreshState, 30*1000);
+    setInterval(this.refreshState, 15*1000);
   },
 
   compareAlerts: function(a, b) {
@@ -44,7 +44,7 @@ var AlertTable = React.createClass({
   render: function() {
     var sortedAlerts = this.state.alerts.sort(this.compareAlerts);
     return (
-      <table className='table table-bordered'>
+      <table className='alertTable'>
         <tbody>
           <tr>
             <th>Time Sent</th>

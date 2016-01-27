@@ -4,6 +4,7 @@ var concat = require('gulp-concat');
 var uglify = require('gulp-uglify');
 var minifyHtml = require('gulp-htmlmin');
 var minifyCss = require('gulp-cssnano');
+var sass = require('gulp-sass');
 
 gulp.task('static', function() {
   return gulp.src(['./static/**/*', './static/**/.*'])
@@ -62,11 +63,20 @@ gulp.task('minifyHtml', function() {
 		.pipe(gulp.dest('dist'));
 });
 
-gulp.task('minifyCss', [ 'bower' ], function() {
-	return gulp.src('build/primer.css')
+gulp.task('minifyCss', [ 'bower', 'sass' ], function() {
+	return gulp.src([
+    'build/primer.css',
+    'build/customcss/**/*.css'
+  ])
 		.pipe(concat('app.css'))
 		.pipe(minifyCss())
 		.pipe(gulp.dest('dist'));
+});
+
+gulp.task('sass', function() {
+  return gulp.src('src/scss/**/*.scss')
+    .pipe(sass())
+    .pipe(gulp.dest('build/customcss'));
 });
 
 gulp.task('build', [ 'static', 'minifyJs', 'minifyHtml', 'minifyCss' ]);
