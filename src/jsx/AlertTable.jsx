@@ -24,7 +24,11 @@ var AlertTable = React.createClass({
 
   componentDidMount: function() {
     this.refreshState();
-    setInterval(this.refreshState, 15*1000);
+    this.refreshTimer = setInterval(this.refreshState, 15*1000);
+  },
+
+  componentWillUnmount: function() {
+    clearInterval(this.refreshTimer);
   },
 
   compareAlerts: function(a, b) {
