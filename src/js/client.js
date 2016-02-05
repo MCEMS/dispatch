@@ -18,18 +18,12 @@
       done(code, response);
     });
 
-    var data = new FormData();
-    if (payload) {
-      for (var prop in payload) {
-        data.append(prop, payload[prop]);
-      }
-    }
-
     xhr.open(method, ROOT_URL + url);
     if (token !== null) {
-      xhr.setRequestHeader('Authorization', 'Bearer ' + token);
+      xhr.setRequestHeader('Authorization', token);
     }
-    xhr.send(data);
+    xhr.setRequestHeader('Content-Type', 'application/json');
+    xhr.send(JSON.stringify(payload));
   };
 
   var storageAvailable = function() {
@@ -76,16 +70,17 @@
   }
 
   var refreshToken = function(credentials, done) {
-    makeRequest('POST', '/auth/key', credentials, function(status, result) {
+    makeRequest('POST', '/api/accounts/login', credentials, function(status, result) {
       if (status != 200) {
         done(new Error('Could not authenticate'));
       } else {
         saveCredentials(credentials);
-        saveToken(result.token);
+        saveToken(result.id);
+        console.log('scheduling refresh in', result.ttl, 'seconds');
         setTimeout(function() {
           console.log('refreshing token');
           refreshToken(getCredentials(), function(){})
-        }, result.expiresInSeconds*1000);
+        }, result.ttl*1000);
         done(null);
       }
     });
@@ -113,8 +108,8 @@
   };
 
   MCEMS.prototype.sendAlert = function(data, done) {
-    makeRequest('POST', '/api/v1/alert', data, function(status) {
-      if (status !== 204) {
+    makeRequest('POST', '/api/alerts/send', data, function(status) {
+      if (status !== 201) {
         done(new Error('Could not send alert: HTTP ' + status));
       } else {
         done(null);
@@ -123,7 +118,7 @@
   };
 
   MCEMS.prototype.getAlerts = function(done) {
-    makeRequest('GET', '/api/v1/active911/alert', null, function(status, alerts) {
+    makeRequest('GET', '/api/alerts/fetchRecent', null, function(status, alerts) {
       if (status !== 200) {
         done(new Error('Could not get alerts: HTTP' + status), null);
       } else {

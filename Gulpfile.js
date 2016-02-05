@@ -5,6 +5,7 @@ var uglify = require('gulp-uglify');
 var minifyHtml = require('gulp-htmlmin');
 var minifyCss = require('gulp-cssnano');
 var sass = require('gulp-sass');
+var webserver = require('gulp-webserver');
 
 gulp.task('static', function() {
   return gulp.src(['./static/**/*', './static/**/.*'])
@@ -77,6 +78,14 @@ gulp.task('sass', function() {
   return gulp.src('src/scss/**/*.scss')
     .pipe(sass())
     .pipe(gulp.dest('build/customcss'));
+});
+
+gulp.task('server', function() {
+  return gulp.src('dist').pipe(webserver());
+});
+
+gulp.task('watch', [ 'server' ], function() {
+  return gulp.watch('src/**/*', [ 'buildDev' ]);
 });
 
 gulp.task('build', [ 'static', 'minifyJs', 'minifyHtml', 'minifyCss' ]);
