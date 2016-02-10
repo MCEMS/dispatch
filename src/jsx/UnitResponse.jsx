@@ -14,10 +14,10 @@ var UnitResponse = React.createClass({
   getCssClass: function() {
     var classMap = {
       'Resp': 'responding',
-      'PickUp': 'pickup',
       'Driver': 'driver',
       'OnScen': 'onscene',
-      'Clear': 'clear'
+      'Clear': 'clear',
+      'Sprvsr': 'sprvsr'
     };
     return classMap[this.props.response];
   },

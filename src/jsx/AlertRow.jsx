@@ -23,10 +23,27 @@ var AlertRow = React.createClass({
     return {};
   },
 
+  compareResponse: function(a, b) {
+    var values = [];
+    values["Resp"] = 4;
+    values["Driver"] = 3;
+    values["OnScen"] = 2;
+    values["Clear"] = 1;
+    values["Sprvsr"] = 0;
+
+    if(values[a.response] > values[b.response]) {
+      return 0;
+    }
+    else {
+      return 1;
+    }
+  },
+
   getResponsesToDisplay: function() {
     var deviceIds = [];
     var devices = {};
     var latestForDevice = {};
+
     for (var k = 0; k < this.props.responses.length; k++) {
       var response = this.props.responses[k];
       if (!devices[response.deviceId]) {
@@ -48,19 +65,22 @@ var AlertRow = React.createClass({
       var id = deviceIds[k];
       latestResponses.push(latestForDevice[id]);
     }
+
     return latestResponses.filter(function(response) {
       return response.response !== 'watch';
     });
   },
 
   render: function() {
+    var sortedResponses = this.getResponsesToDisplay().sort(this.compareResponse);
+
     return (
       <tr>
         <td>{this.props.timestamp}</td>
         <td>{this.props.description}</td>
         <td>{this.props.address} <br /> {this.props.location}</td>
         <td>
-         {this.getResponsesToDisplay().map(function(response, index) {
+         {sortedResponses.map(function(response, index) {
            return <UnitResponse key={index} {...response} />;
          })}
         </td>

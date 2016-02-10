@@ -12,21 +12,22 @@ table.alertTable {
   }
 
   .response.responding {
+    color: #000;
     font-weight: bold;
-  }
-  .response.pickup {
-    font-weight: bold;
-    color: #c60;
   }
   .response.driver {
     font-weight: bold;
-    color: #009;
+    color: #add8e6;
   }
   .response.onscene {
-    color: #090;
     font-weight: bold;
+    color: #00ff00;
   }
   .response.clear {
-    color: #ccc;
+    color: #bbb;
+    font-weight: bold;
+  }
+  .response.sprvsr {
+    color: #ff0000;
   }
 }
