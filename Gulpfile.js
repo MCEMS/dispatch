@@ -14,6 +14,7 @@ gulp.task('static', function() {
 
 gulp.task('compileJsx', function() {
 	return gulp.src([
+    'src/jsx/Timestamp.jsx',
 		'src/jsx/CheckboxInput.jsx',
 		'src/jsx/LongTextInput.jsx',
 		'src/jsx/TextInput.jsx',
@@ -42,6 +43,7 @@ gulp.task('concatJs', [ 'compileJsx', 'bower' ], function() {
 		'src/js/*',
 		'build/react.js',
 		'build/react-dom.js',
+    'build/moment.js',
 		'build/jsx.js'
 	]).pipe(concat('app.js'))
 		.pipe(gulp.dest('dist'));
@@ -51,6 +53,7 @@ gulp.task('bower', function() {
 	return gulp.src([
 		'./bower_components/react/react.js',
 		'./bower_components/react/react-dom.js',
+    './bower_components/moment/moment.js',
 		'./bower_components/primer-css/css/primer.css'
 	]).pipe(gulp.dest('build'));
 });

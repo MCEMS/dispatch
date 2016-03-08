@@ -32,16 +32,16 @@ var AlertTable = React.createClass({
   },
 
   compareAlerts: function(a, b) {
-    var dateA = new Date(a.timestamp);
-    var dateB = new Date(b.timestamp);
+    var format = 'YYYY-MM-DD HH:mm:ss';
+    var dateA = moment.utc(a.timestamp, format);
+    var dateB = moment.utc(b.timestamp, format);
 
-    if (dateA > dateB) {
-      return -1;
-    }
-    else if (dateA < dateB) {
+    if (dateA.isSame(dateB)) {
+      return 0;
+    } else if (dateA.isBefore(dateB)) {
       return 1;
     } else {
-      return 0;
+      return -1;
     }
   },
 
