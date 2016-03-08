@@ -31,12 +31,18 @@ var AlertRow = React.createClass({
     values["Clear"] = 1;
     values["Sprvsr"] = 0;
 
-    if(values[a.response] > values[b.response]) {
+    if (values[a.response] > values[b.response]) {
+      return -1;
+    } else if (values[a.response] < values[b.response]) {
+      return 1;
+    } else {
       return 0;
     }
-    else {
-      return 1;
-    }
+  },
+
+  responseTimestamp: function(response) {
+    var format = 'YYYY-MM-DD HH:mm:ss';
+    return moment.utc(response.timestamp, format);
   },
 
   getResponsesToDisplay: function() {
@@ -51,9 +57,9 @@ var AlertRow = React.createClass({
         devices[response.deviceId] = true;
       }
       if (latestForDevice[response.deviceId]) {
-        var existingTimestamp = new Date(latestForDevice[response.deviceId].timestamp);
-        var newTimestamp = new Date(response.timestamp);
-        if (newTimestamp > existingTimestamp) {
+        var existingTimestamp = this.responseTimestamp(latestForDevice[response.deviceId]);
+        var newTimestamp = this.responseTimestamp(response);
+        if (newTimestamp.isAfter(existingTimestamp)) {
           latestForDevice[response.deviceId] = response;
         }
       } else {
@@ -66,9 +72,7 @@ var AlertRow = React.createClass({
       latestResponses.push(latestForDevice[id]);
     }
 
-    return latestResponses.filter(function(response) {
-      return response.response !== 'watch';
-    });
+    return latestResponses;
   },
 
   render: function() {
@@ -76,7 +80,12 @@ var AlertRow = React.createClass({
 
     return (
       <tr>
-        <td>{this.props.timestamp}</td>
+        <td>
+          <Timestamp timestamp={this.props.timestamp} />
+          <span className='text-muted'>
+            &nbsp;&nbsp;(<Timestamp timestamp={this.props.timestamp} relative={true} />)
+          </span>
+        </td>
         <td>{this.props.description}</td>
         <td>{this.props.address} <br /> {this.props.location}</td>
         <td>
